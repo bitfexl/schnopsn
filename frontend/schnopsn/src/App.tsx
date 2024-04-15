@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Table } from "./components/Table";
+import bgImgUrl from "./assets/wood/wood1.jpg";
 
 export default function App() {
     const [count, setCount] = useState(0);
@@ -11,6 +13,8 @@ export default function App() {
                     count is {count}
                 </button>
             </div>
+
+            <Table bgImgUrl={bgImgUrl}></Table>
         </div>
     );
 }
