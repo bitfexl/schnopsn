@@ -1,33 +1,68 @@
 import { useRef, useState } from "react";
 import { Card } from "./Card";
-import { Draggable, DraggableCallbacks } from "./Draggable";
 import { ManagedCard } from "./ManagedCard";
+
+const layoutProps = [
+    {
+        topOffset: 0,
+        rotate: -10,
+    },
+    {
+        topOffset: 0.125,
+        rotate: -5,
+    },
+    {
+        topOffset: 0.175,
+        rotate: 0,
+    },
+    {
+        topOffset: 0.125,
+        rotate: 5,
+    },
+    {
+        topOffset: 0,
+        rotate: 10,
+    },
+];
 
 export interface TableProps {
     bgImgUrl: string;
+    showDropArea: boolean;
+    size: number;
 }
 
-export function Table({ bgImgUrl }: TableProps) {
-    const [size, setSize] = useState(600);
+export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
     const dropZone = useRef<HTMLDivElement>();
 
     const [cardsActive, setCardsActive] = useState(true);
 
-    function handleCardDragend({ clientX, clientY }: { clientX: number; clientY: number }, id: number) {
+    function handleCardDragend({ clientX, clientY }: { clientX: number; clientY: number }, card: Card) {
         if (isInside(dropZone.current!, clientX, clientY)) {
             setCardsActive(false);
             // TODO: play card
-            alert("Played card " + id + ".");
+            alert("Played card " + JSON.stringify(card) + ".");
             return true;
         }
         return false;
     }
 
+    const cards: Card[] = [
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+    ];
+
+    const cardSize = size * 0.15;
+    const cardTop = size * 0.7;
+    const cardLeft = (size - cardSize * 0.8 * 5 + cardSize * 0.18) / 2;
+
     return (
         <div>
-            <div className="test-br inline-block leading-[0] relative">
+            <div className="inline-block leading-[0] relative">
                 <div
-                    className="test-br inline-block rounded-full bg-yellow-800"
+                    className="inline-block rounded-full bg-yellow-800 shadow-lg"
                     style={{
                         backgroundImage: `url(${bgImgUrl})`,
                         backgroundPosition: "center",
@@ -39,35 +74,26 @@ export function Table({ bgImgUrl }: TableProps) {
 
                 <div
                     ref={dropZone as any}
-                    className="absolute left-[90px] top-[260px] w-[420px] h-[220px] rounded-2xl"
-                    style={{ boxShadow: "0 0 0px black" }}
+                    className="absolute rounded-2xl"
+                    style={{
+                        left: `${size * 0.1}px`,
+                        top: `${size * 0.2}px`,
+                        height: `${size * 0.4}px`,
+                        width: `${size * 0.8}px`,
+                        boxShadow: `0 0 ${showDropArea ? 6 : 0}px black`,
+                    }}
                 ></div>
 
-                <div className="absolute" style={{ top: "50px", left: "50px" }}>
-                    <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, 1)}>
-                        <Card rotate={-10} size={120} card={{ color: "BLATT", value: "KOENIG" }}></Card>
-                    </ManagedCard>
-                </div>
-                <div className="absolute" style={{ top: "35px", left: "150px" }}>
-                    <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, 2)}>
-                        <Card rotate={-5} size={120} card={{ color: "BLATT", value: "KOENIG" }}></Card>
-                    </ManagedCard>
-                </div>
-                <div className="absolute" style={{ top: "29px", left: "250px" }}>
-                    <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, 3)}>
-                        <Card rotate={0} size={120} card={{ color: "BLATT", value: "KOENIG" }}></Card>
-                    </ManagedCard>
-                </div>
-                <div className="absolute" style={{ top: "35px", left: "350px" }}>
-                    <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, 4)}>
-                        <Card rotate={5} size={120} card={{ color: "BLATT", value: "KOENIG" }}></Card>
-                    </ManagedCard>
-                </div>
-                <div className="absolute" style={{ top: "50px", left: "450px" }}>
-                    <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, 5)}>
-                        <Card rotate={10} size={120} card={{ color: "BLATT", value: "KOENIG" }}></Card>
-                    </ManagedCard>
-                </div>
+                {cards.map((card, i) => (
+                    <div
+                        className="absolute"
+                        style={{ top: `${cardTop - cardSize * layoutProps[i].topOffset}px`, left: `${cardLeft + cardSize * 0.8 * i}px` }}
+                    >
+                        <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, card)}>
+                            <Card rotate={layoutProps[i].rotate} size={cardSize} card={card}></Card>
+                        </ManagedCard>
+                    </div>
+                ))}
             </div>
         </div>
     );
