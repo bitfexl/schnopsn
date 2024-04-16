@@ -61,7 +61,12 @@ export function Draggable({ children, mousePointer, onDragend, cbRef, active }: 
         <div
             className="relative"
             onMouseDown={startDrag}
-            style={{ top: `${offset.y}px`, left: `${offset.x}px`, cursor: mousePointer ? "pointer" : "initial" }}
+            style={{
+                top: `${offset.y}px`,
+                left: `${offset.x}px`,
+                cursor: mousePointer ? "pointer" : "initial",
+                zIndex: dragging ? "9999" : "initial",
+            }}
         >
             {children}
         </div>
