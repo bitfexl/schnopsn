@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Card } from "./Card";
 import { ManagedCard } from "./ManagedCard";
+import { StichStack } from "./StichStack";
 
 const layoutProps = [
     {
@@ -50,11 +51,22 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
         return false;
     }
 
-    const opponentCards = 5;
+    const ownCards: Card[] = [
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+    ];
+    const ownStiche: Card[] = [
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+        { color: "BLATT", value: "KOENIG" },
+    ];
+    const ownPoints = 33;
 
-    const cards: Card[] = [
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
+    const opponentCards = 5;
+    const opponentStiche: Card[] = [
         { color: "BLATT", value: "KOENIG" },
         { color: "BLATT", value: "KOENIG" },
         { color: "BLATT", value: "KOENIG" },
@@ -112,7 +124,7 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
                 </div>
 
                 {/* own cards */}
-                {cards.map((card, i) => (
+                {ownCards.map((card, i) => (
                     <div
                         className="absolute"
                         style={{ top: `${cardTop - cardSize * layoutProps[i].topOffset}px`, left: `${cardLeft + cardSize * 0.8 * i}px` }}
@@ -122,6 +134,11 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
                         </ManagedCard>
                     </div>
                 ))}
+
+                {/* own Stiche */}
+                <div className="absolute top-[44%] left-[2%]">
+                    <StichStack cards={ownStiche} size={cardSize} text={ownPoints.toString()}></StichStack>
+                </div>
 
                 {/* opponent cards */}
                 {new Array(opponentCards).fill(0).map((_, i) => (
@@ -135,6 +152,11 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
                         <Card rotate={-layoutProps[i].rotate} size={cardSize * 0.8} card="backside"></Card>
                     </div>
                 ))}
+
+                {/* opponent Stiche */}
+                <div className="absolute top-[22%] left-[8%]">
+                    <StichStack cards={opponentStiche} size={cardSize * 0.8} text={null}></StichStack>
+                </div>
             </div>
         </div>
     );

@@ -19,7 +19,7 @@ export function Card({ rotate, size, card }: CardProps) {
     return (
         <div className="inline-block select-none" style={{ transform: `rotate(${rotate}deg)` }}>
             <img src={cardImgSrc} draggable={false} style={{ height: `${size}px`, width: "auto" }} />
-            <pre className="leading-[1em] text-[10px]">{getText(card)}</pre>
+            <pre className="absolute leading-[1em] text-[10px]">{getText(card)}</pre>
         </div>
     );
 }
