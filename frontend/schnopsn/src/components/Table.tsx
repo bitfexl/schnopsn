@@ -33,16 +33,20 @@ export interface TableProps {
 
 export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
     const dropZone = useRef<HTMLDivElement>();
+    const switchZone = useRef<HTMLDivElement>();
 
     const [cardsActive, setCardsActive] = useState(true);
 
     function handleCardDragend({ clientX, clientY }: { clientX: number; clientY: number }, card: Card) {
-        if (isInside(dropZone.current!, clientX, clientY)) {
+        if (isInside(switchZone.current!, clientX, clientY)) {
+            alert("Switched card " + JSON.stringify(card) + ".");
+        } else if (isInside(dropZone.current!, clientX, clientY)) {
             setCardsActive(false);
             // TODO: play card
             alert("Played card " + JSON.stringify(card) + ".");
             return true;
         }
+
         return false;
     }
 
@@ -54,6 +58,11 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
         { color: "BLATT", value: "KOENIG" },
     ];
 
+    const trumpfCard: Card = {
+        color: "BLATT",
+        value: "KOENIG",
+    };
+
     const cardSize = size * 0.15;
     const cardTop = size * 0.7;
     const cardLeft = (size - cardSize * 0.8 * 5 + cardSize * 0.18) / 2;
@@ -61,6 +70,7 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
     return (
         <div>
             <div className="inline-block leading-[0] relative">
+                {/* background */}
                 <div
                     className="inline-block rounded-full bg-yellow-800 shadow-lg"
                     style={{
@@ -72,6 +82,7 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
                     }}
                 ></div>
 
+                {/* card drop zone */}
                 <div
                     ref={dropZone as any}
                     className="absolute rounded-2xl"
@@ -84,6 +95,21 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
                     }}
                 ></div>
 
+                {/* cards in talon */}
+                <div
+                    ref={switchZone as any}
+                    className="absolute top-1/2 -translate-y-1/2 right-[7%] p-[4%] pl-[8%] rounded-2xl"
+                    style={{ boxShadow: `0 0 ${showDropArea ? 6 : 0}px darkblue` }}
+                >
+                    {/* TODO: fix bg when show drop zones is on */}
+                    <Card rotate={-90} size={cardSize} card={trumpfCard}></Card>
+
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                        <Card rotate={0} size={cardSize} card={"backside"}></Card>
+                    </div>
+                </div>
+
+                {/* own cards */}
                 {cards.map((card, i) => (
                     <div
                         className="absolute"
