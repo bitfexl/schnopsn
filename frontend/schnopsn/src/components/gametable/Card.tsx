@@ -1,5 +1,3 @@
-import cardImgSrc from "../../assets/cards/card.png";
-
 export type Color = "HERZ" | "SCHELLE" | "BLATT" | "EICHEL";
 
 export type Value = "UNTER" | "OBER" | "KOENIG" | "ZEHNER" | "SAU";
@@ -16,18 +14,16 @@ export interface CardProps {
 }
 
 export function Card({ rotate, size, card }: CardProps) {
+    const cardSrc = "/cards/" + (card == "backside" ? "BACKSIDE" : card.color + "_" + card.value) + ".webp";
+
     return (
         <div className="inline-block select-none" style={{ transform: `rotate(${rotate}deg)` }}>
-            <img src={cardImgSrc} draggable={false} style={{ height: `${size}px`, width: "auto" }} />
-            <pre className="absolute leading-[1em] text-[10px]">{getText(card)}</pre>
+            <img
+                className="rounded-[6%] border border-gray-400"
+                src={cardSrc}
+                draggable={false}
+                style={{ height: `${size}px`, width: "auto" }}
+            />
         </div>
     );
-}
-
-function getText(card: Card | "backside") {
-    if (typeof card === "string") {
-        return card;
-    }
-
-    return card.color + " " + card.value;
 }
