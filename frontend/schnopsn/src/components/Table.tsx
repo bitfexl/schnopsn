@@ -50,6 +50,8 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
         return false;
     }
 
+    const opponentCards = 5;
+
     const cards: Card[] = [
         { color: "BLATT", value: "KOENIG" },
         { color: "BLATT", value: "KOENIG" },
@@ -118,6 +120,19 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
                         <ManagedCard active={cardsActive} dropZoneChecker={(c) => handleCardDragend(c, card)}>
                             <Card rotate={layoutProps[i].rotate} size={cardSize} card={card}></Card>
                         </ManagedCard>
+                    </div>
+                ))}
+
+                {/* opponent cards */}
+                {new Array(opponentCards).fill(0).map((_, i) => (
+                    <div
+                        className="absolute"
+                        style={{
+                            top: `${cardTop * 0.1 + cardSize * layoutProps[i].topOffset}px`,
+                            left: `${cardLeft * 1.2 + cardSize * 0.8 * i * 0.8}px`,
+                        }}
+                    >
+                        <Card rotate={-layoutProps[i].rotate} size={cardSize * 0.8} card="backside"></Card>
                     </div>
                 ))}
             </div>
