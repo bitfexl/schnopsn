@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Card } from "./Card";
+import { Card, Color, Value } from "./Card";
 import { ManagedCard } from "./ManagedCard";
 import { StichStack } from "./StichStack";
 
@@ -51,31 +51,14 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
         return false;
     }
 
-    const ownCards: Card[] = [
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-    ];
-    const ownStiche: Card[] = [
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-    ];
+    const ownCards: Card[] = [randomCard(), randomCard(), randomCard(), randomCard(), randomCard()];
+    const ownStiche: Card[] = [randomCard(), randomCard(), randomCard()];
     const ownPoints = 33;
 
     const opponentCards = 5;
-    const opponentStiche: Card[] = [
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-        { color: "BLATT", value: "KOENIG" },
-    ];
+    const opponentStiche: Card[] = [randomCard(), randomCard(), randomCard()];
 
-    const trumpfCard: Card = {
-        color: "BLATT",
-        value: "KOENIG",
-    };
+    const trumpfCard: Card = randomCard();
 
     const cardSize = size * 0.15;
     const cardTop = size * 0.7;
@@ -165,4 +148,14 @@ export function Table({ bgImgUrl, showDropArea, size }: TableProps) {
 function isInside(element: Element, x: number, y: number) {
     const b = element.getBoundingClientRect();
     return x >= b.x && x <= b.right && y >= b.y && y <= b.bottom;
+}
+
+function randomCard(): Card {
+    const colors: Color[] = ["HERZ", "SCHELLE", "BLATT", "EICHEL"];
+    const values: Value[] = ["UNTER", "OBER", "KOENIG", "ZEHNER", "SAU"];
+
+    return {
+        color: colors[Math.floor(Math.random() * colors.length)],
+        value: values[Math.floor(Math.random() * values.length)],
+    };
 }
