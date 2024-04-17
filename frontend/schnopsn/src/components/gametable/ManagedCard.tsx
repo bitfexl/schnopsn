@@ -1,5 +1,5 @@
 import { ReactNode, useRef } from "react";
-import { Draggable, DraggableCallbacks } from "./Draggable";
+import { Draggable, DraggableCallbacks } from "../Draggable";
 
 export interface ManagedCardProps {
     children: ReactNode;

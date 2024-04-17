@@ -1,4 +1,4 @@
-import cardImgSrc from "../assets/cards/card.png";
+import cardImgSrc from "../../assets/cards/card.png";
 
 export type Color = "HERZ" | "SCHELLE" | "BLATT" | "EICHEL";
 

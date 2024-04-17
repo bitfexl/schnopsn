@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table } from "./components/Table";
+import { Table } from "./components/gametable/Table";
 import bgImgUrl1 from "./assets/wood/wood1.jpg";
 import bgImgUrl2 from "./assets/wood/wood2.jpg";
 import bgImgUrl3 from "./assets/wood/wood3.jpg";
